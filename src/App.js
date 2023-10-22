@@ -1,16 +1,20 @@
 // import logo from './logo.svg';
 import './App.css';
-import { Component } from 'react';
+import { Component, createRef } from 'react';
 
 class App extends Component {
+  inputRef = createRef();
   constructor() {
     super();
     this.state = {
       isClicked: false,
       todos: [],
       text: ''
-    }
+    };
+    this.inputRef = createRef();
   }
+
+
 
   onClickHandler = () => {
     this.setState({
@@ -18,6 +22,8 @@ class App extends Component {
       isClicked: !this.state.isClicked
     })
   }
+
+
 
   onChangeHandler = (e) => {
     this.setState({
@@ -33,7 +39,8 @@ class App extends Component {
       ...this.state,
       todos,
       text: '',
-    })
+    });
+    this.inputRef.current.focus();
   }
 
   deleteTodo = (idx) => {
@@ -46,12 +53,11 @@ class App extends Component {
   render() {
     return (
       <div>
-        {/* <button onClick={this.onClickHandler}>{this.state.isClicked ? 'Toggled True' : 'Toggled False'}</button> */}
         <form>
-        <input onChange={this.onChangeHandler} type="text" value={this.state.text} />
-        <button type='button' onClick={this.addTodo }>Add Todo</button>
+          <input ref={this.inputRef} onChange={this.onChangeHandler} type="text" value={this.state.text} />
+          <button onClick={() => { this.onClickHandler(); this.addTodo(); }} type='button'>Add Todo</button>
         </form>
-        
+
         <ul>
           {this.state.todos.map((todo, idx) => (
             <li key={idx}>
